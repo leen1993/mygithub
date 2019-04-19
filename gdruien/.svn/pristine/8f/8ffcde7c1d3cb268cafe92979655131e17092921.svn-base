@@ -1,0 +1,55 @@
+genId.adjust=1
+
+# oracle,mysql,mssql,db2,dm
+
+###MySQL 
+#db.driverClassName=com.mysql.jdbc.Driver
+#jdbc.url=jdbc:mysql://127.0.0.1:3306/ipam4?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round
+#db.url=jdbc:mysql://10.2.3.215:3918/ipam?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round
+#db.username=root
+#db.password=zfxt905
+redisCache=true
+db.dialect=mysql
+
+#db.his.url=jdbc:oracle:thin:@testserver:1521:orcl
+db.his.driverClassName=com.mysql.jdbc.Driver
+db.his.url=jdbc:mysql://localhost:3306/db_exam
+db.his.username=leen
+db.his.password=123456
+db.his.alias=his
+db.his.houseKeepingTestSql=
+db.his.simultaneousBuildThrottle=20
+db.his.maximumActiveTime = 3600000
+db.his.characterEncoding=UTF-8
+db.his.maximumConnectionCount=50
+db.his.minimumConnectionCount=3
+
+platform.homepage=/platform/console/main.do
+security.access.denied.page=/commons/noRights.jsp
+
+#\u62a5\u8868\u670d\u52a1URL\u914d\u7f6e
+# 1. \u4e0d\u540c\u670d\u52a1\u5668\u914d\u7f6e\u65b9\u6cd5 http://192.168.250.159:8080/report
+# 2. \u76f8\u540c\u670d\u52a1\u5668,\u76f8\u5f53\u4e8e /../report
+#url.report=http://192.168.250.159:8080/report
+url.report=/../report
+validCodeEnabled=false
+
+
+#redis\u7684\u670d\u52a1\u5668\u5730\u5740
+redis.host=127.0.0.1
+#redis\u7684\u670d\u52a1\u7aef\u53e3
+redis.port=6379
+#\u5bc6\u7801
+#redis.password=zkys1234
+#\u94fe\u63a5\u6570\u636e\u5e93
+redis.default.db=0
+#\u5ba2\u6237\u7aef\u8d85\u65f6\u65f6\u95f4\u5355\u4f4d\u662f\u6beb\u79d2
+redis.timeout=100000
+#\u6700\u5927\u8fde\u63a5\u6570
+redis.maxIdle=300
+#\u6700\u5927\u7a7a\u95f2\u6570
+redis.minIdle=100
+#\u6700\u5927\u5efa\u7acb\u8fde\u63a5\u7b49\u5f85\u65f6\u95f4
+redis.maxWait=1000
+
+salts.test=9099932332

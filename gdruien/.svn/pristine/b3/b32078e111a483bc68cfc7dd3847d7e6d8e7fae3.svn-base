@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rekj.own.pojo.Student" >
+    <resultMap id="BaseResultMap" type="com.rekj.own.pojo.Student" >
+        <result column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="joinTime" property="jointime" jdbcType="TIMESTAMP" />
+        <result column="question" property="question" jdbcType="VARCHAR" />
+        <result column="answer" property="answer" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="cardNo" property="cardno" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="add" parameterType="com.rekj.own.pojo.Student" >
+        insert into tb_student (ID, name, pwd, 
+            sex, joinTime, question, 
+            answer, profession, cardNo
+            )
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+            #{sex,jdbcType=VARCHAR}, #{jointime,jdbcType=TIMESTAMP}, #{question,jdbcType=VARCHAR}, 
+            #{answer,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <select id="getById" parameterType="string" resultType="com.rekj.own.pojo.Student">
+        select ID, name, pwd, sex, joinTime, question, answer, profession, cardNo 
+        from tb_student where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getAll" resultType="com.rekj.own.pojo.Student">
+        select ID, name, pwd, sex, joinTime, question, answer, profession, cardNo 
+        from tb_student    
+    </select>
+    
+</mapper>

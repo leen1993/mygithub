@@ -1,0 +1,21 @@
+package com.rekj.own.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.rekj.core.db.IEntityDao;
+import com.rekj.core.service.BaseService;
+import com.rekj.own.dao.StudentDao;
+
+@Service
+public class StudentService extends BaseService{
+    
+	@Autowired
+	private StudentDao studentDao;
+
+	@Override
+	protected IEntityDao getEntityDao() {
+		return this.studentDao;
+	}
+
+}

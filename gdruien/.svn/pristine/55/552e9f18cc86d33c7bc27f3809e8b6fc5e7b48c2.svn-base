@@ -1,0 +1,101 @@
+package com.rekj.core.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+
+//import org.codehaus.jackson.annotate.JsonIgnore;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+/**
+ * 基础数据模型
+ * 
+ * @author jack
+ * @date 2017年5月7日 下午3:24:19
+ */
+public class BaseModel implements Serializable {
+
+	// 操作时间
+//	@JsonIgnore
+	protected Date operTime;
+
+	// 操作人
+//	@JsonIgnore
+	protected String operId;
+
+	// 用于CRUD批量编辑的标识参数(与界面兼容)
+	@JsonIgnore
+	protected String _state;
+
+	// 扩展标记,一般用于转义id,name使用,如 XX编码对应的XX名称
+	private HashMap tag;
+
+	// 禁止读入_id属性
+	@JSONField(name = "_id")
+	public void set__id(String _id) {
+	}
+
+	public Date getOperTime() {
+		return operTime;
+	}
+
+	public void setOperTime(Date operTime) {
+		this.operTime = operTime;
+	}
+
+	public String getOperId() {
+		return operId;
+	}
+
+	public void setOperId(String operId) {
+		this.operId = operId;
+	}
+
+	public String get_state() {
+		return _state;
+	}
+
+	public void set_state(String _state) {
+		this._state = _state;
+	}
+
+	public HashMap getTag() {
+		return tag;
+	}
+
+	public void setTag(HashMap tag) {
+		this.tag = tag;
+	}
+
+	/**
+	 * 设置扩展对象属性信息
+	 * 
+	 * @param key
+	 * @param value
+	 * @author jack 2017年6月29日 上午3:45:31
+	 */
+	@JsonIgnore
+	public void setTagValue(String key, Object value) {
+		if (tag == null) {
+			tag = new HashMap();
+		}
+		tag.put(key, value);
+	}
+
+	/**
+	 * 读取扩展对象属性信息(避免使用get)
+	 * 
+	 * @param key
+	 * @return
+	 * @author jack 2017年6月29日 上午3:45:48
+	 */
+	@JsonIgnore
+	public Object getTagValue(String key) {
+		if (tag == null) {
+			return null;
+		}
+		return tag.get(key);
+	}
+}

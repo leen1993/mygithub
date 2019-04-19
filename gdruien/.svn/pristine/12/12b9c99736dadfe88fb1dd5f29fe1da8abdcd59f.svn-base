@@ -1,0 +1,29 @@
+/**
+ * 版本信息: version 0.5 
+ * 创建日期: 2019-03-24 15:59:12
+ * Copyright ©2017 中科云尚(phd91.com) Inc. All Rights Reserved。 
+ * 
+ * 描述: 
+ * 作者: Leen
+ * 修订历史: 2019-03-24 15:59:12 初始创建
+ */
+package com.rekj.jj.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.rekj.core.db.BaseDao;
+import com.rekj.jj.pojo.Student;
+
+/**
+ * 学生表
+ * @table	tb_student
+ * @author	Leen
+ * @date		2019-03-24 15:59:12
+ */
+@Repository
+public class StudentDao extends BaseDao {
+
+    protected String getNamespace() {
+        return Student.class.getName();
+    }
+}

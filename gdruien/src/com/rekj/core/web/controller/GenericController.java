@@ -1,0 +1,273 @@
+package com.rekj.core.web.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+//import org.slf4j.Logger;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.rekj.core.util.BeanUtils;
+import com.rekj.core.util.StringUtil;
+import com.rekj.core.web.ResultMessage;
+import com.rekj.core.web.util.RequestUtil;
+
+/**
+ * 控制器基础类
+ * 
+ * @author      jack
+ * @date        2017年5月7日 下午4:34:32
+ */
+public class GenericController {
+	
+//	protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
+	public static Logger logger = Logger.getLogger(BaseController.class);
+	
+
+	// 成功访问标识,对于错误访问的不做定义,!OK 情况,直接返回错误内容,打印日志
+	public static final String OK = "ok";
+	
+	public static final String YES = "1";
+	public static final String NO = "";
+	
+	public static final String ALL = "all";
+	
+	public static final String ACTION_ADD = "add";
+	public static final String ACTION_EDIT = "edit";
+	
+	private MessageSourceAccessor messages;
+	
+	public static final String MESSAGES_KEY = "successMessages";
+	public static final String ERRORS = "errors";
+
+	@Resource
+	protected Properties configproperties;
+
+	/**
+	 * .jsp路径转.do
+	 * e.g.
+	 * /platform/system/sysUser/introduction.do  ==>
+	 * /platform/system/sysUser/introduction.jsp  
+	 * 
+	 * @return 
+	 * @author jack  2017年5月7日 下午4:32:50
+	 */
+	public ModelAndView getView() {
+		HttpServletRequest request = RequestUtil.getHttpServletRequest();
+		String uri = request.getRequestURI();
+		String ctx = request.getContextPath();
+		if (!StringUtils.isEmpty(ctx)) {
+			uri = uri.substring(ctx.length());
+		}
+		
+		String jspPath = uri.replace(".do", ".jsp");
+		return new ModelAndView(jspPath);
+	}
+	
+	/**
+	 * .jsp路径转.do
+	 * e.g.
+	 * /platform/system/sysUser/introduction.do  ==>
+	 * /platform/system/sysUser/introduction.jsp  
+	 * 
+	 * @return 
+	 * @author jack  2017年5月7日 下午4:32:50
+	 */
+	public ModelAndView getReView() {
+		HttpServletRequest request = RequestUtil.getHttpServletRequest();
+		String uri = request.getRequestURI();
+		String ctx = request.getContextPath();
+		if (!StringUtils.isEmpty(ctx)) {
+			uri = uri.substring(ctx.length()+1, uri.lastIndexOf("/"));
+		} 
+//		/jc/api/account/view.do
+		String jspPath = uri.concat(".jsp");
+		return new ModelAndView(jspPath);
+	}
+	
+	/**
+	 * (N-1)段URL路径访问约定
+	 * /platform/system/sysUser/introduction.do  ==>
+	 * /platform/system/sysUserIntroduction.jsp
+	 * 
+	 * @return
+	 * @throws Exception 
+	 * @author jack  2017年5月7日 下午4:38:54
+	 */
+	public ModelAndView getAutoView() throws Exception {
+		HttpServletRequest request = RequestUtil.getHttpServletRequest();
+		String uri = request.getRequestURI();
+		logger.debug("URI:" + uri);
+		String ctx = request.getContextPath();
+		uri = uri.replace(".do", "");
+		if (!StringUtils.isEmpty(ctx)) {
+			uri = uri.substring(ctx.length());
+		}
+
+		int index = uri.lastIndexOf("/");
+		String base = uri.substring(0, index);
+		String last = uri.substring(index+1);
+		last = StringUtil.makeFirstLetterUpperCase(last);
+		String jspPath = base + last + ".jsp";
+		return new ModelAndView(jspPath);
+	}
+	
+	/**
+	 * <p>
+	 * 适用场景:<br>
+	 * Controller中不包含 @ResponseBody
+	 * 注解的时候,可以使用该方法直接返回内容,如果包含 @ResponseBody 
+	 * 注解,可以直接返回  ResultMessage对象
+	 * js需要使用$.decode(r)
+	 * </p>
+	 * <code>
+	 * e.g.<br>
+	 * var r = $.decode(result);<br>
+	 * if (r.success) {<br>
+	 *    // doIt();<br>
+	 * } else {<br>
+	 *    top.mini.error(r.message);<br>
+	 *    // finish();<br>
+	 * }<br>
+	 * <code>
+	 * @see com.rekj.core.web.ResultMessage
+	 * <code>
+	 * 回写页面返回结果,json格式:
+	 * {<br>
+	 *     success: true,<br>
+	 *     message: "ok, you are boss",<br>
+	 *     tag:     {}   <br>
+	 * }
+	 * </code>
+	 * <p>
+	 * success 标识请求是否成功
+	 * message 成功或者失败的消息内容
+	 * tag 为传递的自定义对象
+	 * </p>
+	 * @param success
+	 * @param message 
+	 * @author jack  2017年5月9日 下午1:14:00
+	 */
+	protected void echo(boolean success, String message) {
+		try {
+			HttpServletResponse response = RequestUtil.getHttpServletResponse();
+			ResultMessage resultMessage = new ResultMessage(success, message);
+			response.getWriter().print(resultMessage);
+		} catch (IOException e) {
+			// ignore;
+		}
+	}
+	
+	/**
+	 * <p>
+	 * 适用场景:
+	 * <strong>回写页面后,不需要在返回值中附加tag信息的,可以使用该方法,比较简单
+	 * 回写页面返回结果,js不需要使用$.decode(r)解析,直接使用返回值
+	 * 前端页面js,使用方法:</strong>
+	 * </p>
+	 * <code>
+	 * javascript: e.g.<br>
+	 * success: function(result) {<br>
+	 *     if (result == "ok") {<br>
+	 *         // doIt();<br>
+	 *     } else {<br>
+	 *     	   top.mini.error(result);<br>
+	 *     }<br>
+	 * }<br>
+	 * </code>
+	 * <strong>其中 "ok" 返回值为系统约定的成功返回值,可以使用Controller中的常定义 OK</strong>
+	 * <p>
+	 * java e.g.:<br>
+	 * 
+	 * echo(OK);
+	 * </p>
+	 * @param result
+	 * @author jack  2017年5月9日 下午4:07:08
+	 */
+	protected void echo(String result) {
+		try {
+			HttpServletResponse response = RequestUtil.getHttpServletResponse();
+			response.getWriter().print(result);
+		} catch (IOException e) {
+			// ignore;
+		}
+	}
+
+	@Autowired
+	public void setMessages(MessageSource messageSource) {
+		this.messages = new MessageSourceAccessor(messageSource);
+	}
+
+	public void saveError(HttpServletRequest request, String msg) {
+		saveMessage(request, "errors", msg);
+	}
+
+	public void saveMessage(HttpServletRequest request, String msg) {
+		saveMessage(request, "successMessages", msg);
+	}
+
+	public void saveMessage(HttpServletRequest request, String key, String msg) {
+		List messages = (List) request.getSession().getAttribute(key);
+
+		if (messages == null) {
+			messages = new ArrayList();
+		}
+		messages.add(msg);
+		request.getSession().setAttribute(key, messages);
+	}
+
+	public String getText(String msgKey, Locale locale) {
+		return this.messages.getMessage(msgKey, locale);
+	}
+
+	public String getText(String msgKey, String arg, Locale locale) {
+		return getText(msgKey, new Object[] { arg }, locale);
+	}
+
+	public String getText(String msgKey, Object[] args, Locale locale) {
+		return this.messages.getMessage(msgKey, args, locale);
+	}
+
+/*	public String getText(String msgKey, Object[] args) {
+		return this.messages.getMessage(msgKey, args, ContextUtil.getLocale());
+	}
+
+	public String getText(String msgKey) {
+		return this.messages.getMessage(msgKey, ContextUtil.getLocale());
+	}*/
+
+	/*protected String getText(String msgKey, String arg,
+			HttpServletRequest request) {
+		Locale locale = ContextUtil.getLocale();
+		return getText(msgKey, arg, locale);
+	}
+
+	protected String getText(String msgKey, Object[] args,
+			HttpServletRequest request) {
+		Locale locale = ContextUtil.getLocale();
+		return getText(msgKey, args, locale);
+	}*/
+	
+	/**
+	 * 查找容器bean
+	 * 
+	 * @param clazz
+	 * @return 
+	 * @author jack  2017年6月29日 上午12:33:17
+	 */
+	public <T> T getBean(Class<T> clazz) {
+		return (T)BeanUtils.getBean(clazz);
+	}
+	
+}

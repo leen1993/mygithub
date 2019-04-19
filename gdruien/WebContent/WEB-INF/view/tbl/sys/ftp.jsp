@@ -1,0 +1,174 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/commons/include/html_doctype.html"%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>tbl_sys_ftp</title>
+<%@include file="/commons/include/get.jsp"%>
+<style type="text/css">
+
+</style>
+
+</head>
+<body>
+    <h2>tbl_sys_ftp数据增上改查</h2>
+    <p></p>
+    <div style="margin:20px 0;"></div>
+    <table id="dg_id" class="easyui-datagrid" title="Basic DataGrid" style="width:800px;height:500px"
+            data-options="toolbar:'#tb',singleSelect:true,collapsible:true,url:'${ctx }/tbl/sys/ftp/getAll.do',method:'get'">
+        <thead>
+            <tr>
+                <th data-options="field:'ftpId',">ftpId</th>
+                <th data-options="field:'ftpName',">名称</th>
+                <th data-options="field:'ip',">IP</th>
+                <th data-options="field:'port',">端口号</th>
+                <th data-options="field:'username',">登录名</th>
+                <th data-options="field:'password',">登陆密码</th>
+                <th data-options="field:'encoding',">编码</th>
+                <th data-options="field:'timeout',">超时时间</th>
+                <th data-options="field:'ftpPath',">路径</th>
+                <th data-options="field:'url',">访问URL</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb" style="padding:5px;height:auto">
+        <div style="margin-bottom:5px">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="add()" plain="true">增加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="del()" plain="true">删除</a>
+        </div>
+    </div>
+    
+    <!-- 弹窗对内容进行编辑  -->
+    <div id="w" class="easyui-window" title="更新" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:350px;padding:10px;">
+          <form id="ff" method="post">
+            <input class="easyui-hidden" type="hidden" name="state_value"/> 
+            <table cellpadding="5">
+                
+                <tr>
+                     <td></td>
+                     <td><input class="easyui-textbox" type="text" name="ftpId" data-options="required:true"></td>
+                </tr>
+                <tr>
+                     <td>名称</td>
+                     <td><input class="easyui-textbox" type="text" name="ftpName" data-options="required:true"></td>
+                </tr>
+                <tr>
+                     <td>IP</td>
+                     <td><input class="easyui-textbox" type="text" name="ip" data-options="required:true"></td>
+                </tr>
+                <tr>
+                     <td>端口号</td>
+                     <td><input class="easyui-textbox" type="text" name="port" data-options="required:true"></td>
+                </tr>
+                <tr>
+                     <td>登录名</td>
+                     <td><input class="easyui-textbox" type="text" name="username" data-options="required:false"></td>
+                </tr>
+                <tr>
+                     <td>登陆密码</td>
+                     <td><input class="easyui-textbox" type="text" name="password" data-options="required:false"></td>
+                </tr>
+                <tr>
+                     <td>编码</td>
+                     <td><input class="easyui-textbox" type="text" name="encoding" data-options="required:true"></td>
+                </tr>
+                <tr>
+                     <td>超时时间</td>
+                     <td><input class="easyui-textbox" type="text" name="timeout" data-options="required:false"></td>
+                </tr>
+                <tr>
+                     <td>路径</td>
+                     <td><input class="easyui-textbox" type="text" name="ftpPath" data-options="required:false"></td>
+                </tr>
+                <tr>
+                     <td>访问URL</td>
+                     <td><input class="easyui-textbox" type="text" name="url" data-options="required:true"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+ <script>
+      $(function () {
+         $("#dg_id").datagrid({
+              //双击事件进行修改
+              onDblClickRow: function (index, row) {
+                  row.state_value = "update";
+                  $('#ff').form('load', row);
+                  $('#w').window('open');
+              }
+         });
+      })
+   
+      // 提交表单
+     function submitForm() { 
+          var pass = $("#ff").form('enableValidation').form('validate');
+          if(!pass) {
+              alert("表单数据不符合规范！");
+              return;
+          }
+          $.ajax({
+              type: "POST",
+              url: "${ctx }/tbl/sys/ftp/update.do",
+              data: $('#ff').serialize(),
+              success: function (result) {
+                  if(result > 0) {
+                      $('#w').window('close');
+                      $('#dg_id').datagrid('load', {});
+                  }  else {
+                      alert(result);
+                  }
+              },
+              error : function(result) {
+                  alert(result);
+              }
+          });
+      }
+      
+      // 删除
+      function del() {
+        var row = $('#dg_id').datagrid('getSelected');
+        row.state_value = "delete";
+        if (row){
+            $.ajax({
+                type: "POST",
+                url: "${ctx }/tbl/sys/ftp/update.do",
+                data: row,
+                success: function (result) {
+                    if(result > 0) {
+                        $('#w').window('close');
+                        $('#dg_id').datagrid('load', {});
+                    } else {
+                        alert(result);
+                    }
+                },
+                error : function(result) {
+                    alert(result);
+                }
+            });
+        }
+      }
+      
+      // 添加按钮
+      function add() {
+          $('#ff').form('clear');
+          $('#ff').form('load', {
+              state_value:"add",
+              id:"0"
+          });
+          
+          $('#w').window('open');
+      }
+      
+      function clearForm(){
+            $('#ff').form('clear');
+      }
+   </script>
+    
+</body>
+</html>
+

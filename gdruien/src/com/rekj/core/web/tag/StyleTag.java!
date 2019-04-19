@@ -1,0 +1,57 @@
+package com.rekj.core.web.tag;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.rekj.core.util.ContextUtil;
+
+@SuppressWarnings("serial")
+public class StyleTag extends BodyTagSupport {
+	protected Logger logger = LoggerFactory.getLogger(StyleTag.class);
+	private String href;
+
+	public String getHref() {
+		return this.href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
+	}
+
+	public int doStartTag() throws JspTagException {
+		return 2;
+	}
+
+	private String getOutput() throws Exception {
+		HttpServletRequest request = (HttpServletRequest) this.pageContext
+				.getRequest();
+		this.logger.info(request.getRequestURI());
+		StringBuffer content = new StringBuffer(
+				"<link title=\"index\" name=\"styleTag\" rel=\"stylesheet\" type=\"text/css\" href=\"");
+		content.append(request.getContextPath());
+		content.append("/styles/");
+		String styleName = ContextUtil.getCurrentUserSkin(request);
+
+		content.append(styleName + "/css");
+
+		content.append("/");
+		content.append(this.href);
+		content.append("\"></link>");
+
+		return content.toString();
+	}
+
+	public int doEndTag() throws JspTagException {
+		try {
+			String str = getOutput();
+			this.pageContext.getOut().print(str);
+		} catch (Exception e) {
+			throw new JspTagException(e.getMessage());
+		}
+		return 0;
+	}
+}

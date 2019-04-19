@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/commons/include/html_doctype.html"%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>[tableName]</title>
+<%@include file="/commons/include/get.jsp"%>
+<style type="text/css">
+
+</style>
+
+</head>
+<body>
+    <h2>[tableName]数据增上改查</h2>
+    <p></p>
+    <div style="margin:20px 0;"></div>
+    <table id="dg_id" class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+            data-options="singleSelect:true,collapsible:true,url:'[baseUrl]getAll.do',method:'get'">
+        <thead>
+            <tr>
+                [fields]
+            </tr>
+        </thead>
+    </table>
+   
+   
+   <script>
+   
+   </script>
+   
+</body>
+</html>
+

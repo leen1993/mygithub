@@ -1,0 +1,16 @@
+package [packageName];
+
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rekj.core.model.BaseModel;
+/**
+ * [tableName] (数据库表名)
+ * 这个类是数据库表 [tableName] 的标准映射类
+ * 
+ * @date [createDate]
+ * @author [author]
+ * 
+ */
+public class [pojoName] extends BaseModel {
+    [fields]
+}

@@ -1,0 +1,47 @@
+package [packageName];
+
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import com.rekj.core.db.IEntityDao;
+import com.rekj.core.service.BaseService;
+[imports]
+
+/**
+ *  
+ * @table [tableName]
+ * @author  [author]
+ * @date  [createDate]
+ */
+@Service
+public class [pojoName]Service extends BaseService{
+
+    @Resource
+    private [pojoName]Dao [pojoNameSm]Dao;
+    
+    @Override
+    protected IEntityDao getEntityDao() {
+        return [pojoNameSm]Dao;
+    }
+
+    public int insert([pojoName] [pojoNameSm]) {
+        return [pojoNameSm]Dao.add([pojoNameSm]);
+    }
+    
+    public Object update([pojoName] [pojoNameSm]) {
+        try {
+        if("add".equals([pojoNameSm].getState_value())) {
+            return [pojoNameSm]Dao.add([pojoNameSm]);
+        } else if("update".equals([pojoNameSm].getState_value())) {
+            return [pojoNameSm]Dao.update([pojoNameSm]);
+        } else if("delete".equals([pojoNameSm].getState_value())) {
+            return [pojoNameSm]Dao.delBySqlKey("delOne", [pojoNameSm]);
+        }
+        } catch(Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+        return 0;
+    }
+    
+    
+}

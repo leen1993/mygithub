@@ -1,0 +1,23 @@
+/**
+ * Copyright ©2017 瑞恩科技 (phd91.com) Inc. All Rights Reserved。
+ * 
+ */
+package [packageName];
+
+import org.springframework.stereotype.Repository;
+import com.rekj.core.db.BaseDao;
+[imports]
+
+/**
+ * 
+ * @table   [tableName]
+ * @author  [author]
+ * @date   [createDate]
+ */
+@Repository
+public class [pojoName]Dao extends BaseDao {
+
+    protected String getNamespace() {
+        return [pojoName].class.getName();
+    }
+}

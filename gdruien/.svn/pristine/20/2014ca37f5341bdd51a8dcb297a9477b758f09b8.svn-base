@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>f</short-name>
+	<uri>http://www.phd91.com/functions</uri>
+	<function>
+		<description>时间转化</description>
+		<name>formatTime</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String formatTime(long)
+		</function-signature>
+		<example>${f:formatTime(date)}</example>
+	</function>
+
+	<function>
+		<description>日期转化</description>
+		<name>formatDate</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String formatDate(long)
+		</function-signature>
+		<example>${f:formatDate(date)}</example>
+	</function>
+	<function>
+		<description>取得当前时间</description>
+		<name>currentTime</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getCurrentTime()
+		</function-signature>
+		<example>${f:currentTime()}</example>
+	</function>
+
+	<function>
+		<description>取得当前日期</description>
+		<name>currentDate</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getCurrentDate()
+		</function-signature>
+		<example>${f:currentDate()}</example>
+	</function>
+
+	<function>
+		<description>根据日期取得短日期格式的显示</description>
+		<name>shortDate</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getDateString(java.util.Date)
+		</function-signature>
+		<example>${f:shortDate(date)}</example>
+	</function>
+
+	<function>
+		<description>根据日期取得长日期格式的显示</description>
+		<name>longDate</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getDateTimeString(java.util.Date)
+		</function-signature>
+		<example>${f:longDate(date)}</example>
+	</function>
+
+	<function>
+		<description>根据路径返回多少个空格</description>
+		<name>returnSpace</name>
+		<function-class>com.rekj.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String returnSpace(java.lang.String)
+		</function-signature>
+		<example>${f:returnSpace(string)}</example>
+	</function>
+
+	<function>
+		<description>数字千分位显示</description>
+		<name>comdify</name>
+		<function-class>com.rekj.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String comdify(java.lang.String)
+		</function-signature>
+		<example>${f:comdify(string)}</example>
+	</function>
+
+	<function>
+		<description>根据毫秒数取得时间段</description>
+		<name>getTime</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getTime(java.lang.Long)
+		</function-signature>
+		<example>${f:getTime(long)}</example>
+	</function>
+	<function>
+		<description>计算持续时间</description>
+		<name>getDurationTime</name>
+		<function-class>com.rekj.core.util.TimeUtil</function-class>
+		<function-signature>java.lang.String getDurationTime(java.util.Date)
+		</function-signature>
+		<example>${f:durationTime(date)}</example>
+	</function>
+	<!-- 格式化文本 -->
+	<function>
+		<description>格式化文本 </description>
+		<name>parseText</name>
+		<function-class>com.rekj.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String parseText(java.lang.String)
+		</function-signature>
+		<example>${f:parseText(string)}</example>
+	</function>
+	<function>
+		<description>截取文本 </description>
+		<name>subString</name>
+		<function-class>com.rekj.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String subString(java.lang.String)
+		</function-signature>
+		<example>${f:subString(string)}</example>
+	</function>
+	<function>
+		<description>截取文本 </description>
+		<name>removeHTMLTag</name>
+		<function-class>com.rekj.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String removeHTMLTag(java.lang.String)
+		</function-signature>
+		<example>${f:removeHTMLTag(string)}</example>
+	</function>
+</taglib>

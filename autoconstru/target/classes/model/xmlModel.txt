@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  [author]  [createDate] -->
+<mapper namespace="[fullName]">
+    <resultMap id="resultMap" type="[fullName]" autoMapping="true">
+        [resultMap]
+    </resultMap>
+
+    <!-- 根据ID获取  -->
+    <select id="getById" parameterType="string"  resultMap="resultMap">
+        select [fields] 
+        from [tableName] 
+        where [primarystr]
+    </select>   
+    
+    <!--获取全部-->
+     <select id="getAll" resultMap="resultMap">
+        select [fields] 
+        from [tableName]
+    </select>
+    
+    <!--分页查询-->
+    <select id="getPageList" parameterType="java.util.Map" resultMap="resultMap">
+        select [fields] 
+        from [tableName]
+        where 1 = 1
+            [coditions]
+        limit #{start}, #{num}
+    </select>
+    
+    <!--插入一条数据-->
+    <insert id="add" parameterType="[fullName]" useGeneratedKeys="true" keyProperty="[primaryKey]">
+        insert into [tableName] (
+            [fields]
+        ) values (
+            [insertValues]
+        )
+    </insert>
+    
+    <!-- 更新一条数据  先获取后更新 -->
+    <update id="update" parameterType="[fullName]" >
+        update [tableName]
+        set [updateValues]
+        where [primarystr]
+    </update>
+    
+    <!--根据  ID 删除-->
+    <delete id="delOne" parameterType="[fullName]">
+        delete from [tableName]
+        where [primarystr]
+    </delete>
+    
+</mapper>
